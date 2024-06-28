@@ -45,7 +45,11 @@ Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p 
 1. List Channel dan Room
 - Setelah user dapat melihat daftar channel yang tersedia.
   
+  ![Screenshot 2024-06-28 222216(1)](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/c3ca30d8-c0a6-46e2-b524-69c3abff914d)
+
 - Setelah Masuk Channel user dapat melihat list room dan pengguna dalam channel tersebut
+  
+![Screenshot 2024-06-28 222302](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/040bf580-c3d7-444a-a93f-0af617561731)
 
 2. Akses Channel dan Room
    ini code yang kami gunakan untuk join room
@@ -115,12 +119,6 @@ Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan se
 
 ### C. Root
 - Akun yang pertama kali mendaftar otomatis mendapatkan peran "root".
-  
-
-![Screenshot 2024-06-28 222216(1)](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/42d2f327-a618-4d6a-a929-ef7c7ddb9ddb)
-
-![Screenshot 2024-06-28 222302](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/9b6c1c3f-4d9b-465a-9a56-f71d0d189abf)
-
 - Root dapat masuk ke channel manapun tanpa key dan create, update, dan delete pada channel dan room, mirip dengan admin [D].
 - Root memiliki kemampuan khusus untuk mengelola user, seperti: list, edit, dan Remove.
 
