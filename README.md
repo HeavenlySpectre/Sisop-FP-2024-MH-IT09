@@ -243,7 +243,8 @@ ISI USERS.LOG
 
 ### F. Error Handling
 Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan error dan tanpa keluar dari program client.
-
+Sebagai contoh adalah output `Tidak ada room yang tersedia, buat terlebih dahulu!
+` yang muncul ketika LIST ROOM digunakan namun tidak ada room yang tersedia (bisa dilihat diatas pada bagian CRUD untuk room).
 
 ### G. Monitor
 - User dapat menampilkan isi chat secara real-time menggunakan program monitor. Jika ada perubahan pada isi chat, perubahan tersebut akan langsung ditampilkan di terminal.
