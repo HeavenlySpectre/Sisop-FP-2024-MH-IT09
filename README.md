@@ -52,7 +52,8 @@ Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p 
 
 - Setelah Masuk Channel user dapat melihat list room dan pengguna dalam channel tersebut
   
-![Screenshot 2024-06-28 222302](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/040bf580-c3d7-444a-a93f-0af617561731)
+ ![Screenshot 2024-06-28 222302](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/040bf580-c3d7-444a-a93f-0af617561731)
+
 
 2. Akses Channel dan Room
    ini code yang kami gunakan untuk join room
@@ -78,7 +79,7 @@ Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
    
 
 3. Fitur Chat
-   ini adalah fungsi untuk fitur chat
+   ini adalah code yang kami gunakan untuk fitur chat
    ```
    else if (strncmp(buffer, "CHAT ", 5) == 0) {
                 char *message = strtok(buffer + 5, "\"");
@@ -119,6 +120,7 @@ Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
    ```
    
 Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan semua pesan disimpan dalam file chat.csv. User dapat melihat pesan-pesan chat yang ada dalam room. Serta user dapat edit dan delete pesan yang sudah dikirim dengan menggunakan ID pesan.
+Berikut gambarnya
 
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/bd31904d-bccb-4c88-8b48-9f8d49bcaa64)
 
@@ -128,12 +130,16 @@ Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan se
 - Root dapat masuk ke channel manapun tanpa key dan create, update, dan delete pada channel dan room, mirip dengan admin [D].
 - Root memiliki kemampuan khusus untuk mengelola user, seperti: list, edit, dan Remove.
 
+Berikut tampilannya apabila user mendapatkan peran root.
+
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/69ed1c3d-45c0-4455-a4a5-1019b64eb3d3)
 
 
 ### D. Admin Channel
 - Setiap user yang membuat channel otomatis menjadi admin di channel tersebut. Informasi tentang user disimpan dalam file auth.csv.
 - Admin dapat create, update, dan delete pada channel dan room, serta dapat remove, ban, dan unban user di channel mereka.
+
+## Berikut Adalah code yang kami gunakan 
 
 1. Channel
    ini adalah fungsi untuk channel
@@ -166,6 +172,8 @@ Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan se
 
    
 Informasi tentang semua channel disimpan dalam file channel.csv. Semua perubahan dan aktivitas user pada channel dicatat dalam file users.log.
+Berikut adalah gambarnya
+
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f1458ca9-6b09-4b31-aa9f-28213648b273)
 
 
@@ -193,7 +201,10 @@ Informasi tentang semua channel disimpan dalam file channel.csv. Semua perubahan
    ```
    
 Semua perubahan dan aktivitas user pada room dicatat dalam file users.log.
+Berikut adalah tampilannya 
+
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f0f673c0-fae5-4121-984b-31ddee541918)
+
 
 4. Ban
    ini adalah fungsi untuk Ban
@@ -203,9 +214,10 @@ Semua perubahan dan aktivitas user pada room dicatat dalam file users.log.
     snprintf(filepath, sizeof(filepath), "%s/%s/admin/auth.csv", BASE_DIR, channel);
    ```
 Admin dapat melakukan ban pada user yang nakal. Aktivitas ban tercatat pada users.log. Ketika di ban, role "user" berubah menjadi "banned". Data tetap tersimpan dan user tidak dapat masuk ke dalam channel.
-Berikut gambarnya 
+Berikut tampilannya
 
 ![WhatsApp Image 2024-06-28 at 10 24 08 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/d4c3c86e-d043-4070-bc22-cc2330d42e80)
+
 
 5. Unban
    ini fungsi untuk unban
@@ -215,7 +227,11 @@ Berikut gambarnya
     snprintf(filepath, sizeof(filepath), "%s/%s/admin/auth.csv", BASE_DIR, channel);
    ```
 Admin dapat melakukan unban pada user yang sudah berperilaku baik. Aktivitas unban tercatat pada users.log. Ketika di unban, role "banned" berubah kembali menjadi "user" dan dapat masuk ke dalam channel.
+Berikut adalah tampilannya 
+
 ![Screenshot 2024-06-28 222636](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/71849099-d25b-4b46-84a7-7aaa186cfe2c)
+
+
 6. Remove user
    ini fungsi untuk remove user
    ```
@@ -224,6 +240,8 @@ Admin dapat melakukan unban pada user yang sudah berperilaku baik. Aktivitas unb
     sprintf(filename, "/home/azrael/sisop/finalproject/%s/admin/auth.csv", channel);
    ```
 Admin dapat remove user dan tercatat pada users.log.
+Berikut adalah tampilannya
+
 ![Screenshot 2024-06-28 222719](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f4df98fa-f7da-481f-b700-f49cb974fff9)
 
 
@@ -231,21 +249,34 @@ Admin dapat remove user dan tercatat pada users.log.
 User dapat mengubah informasi profil mereka, user yang di ban tidak dapat masuk kedalam channel dan dapat keluar dari room, channel, atau keluar sepenuhnya dari DiscorIT.
 
 1. Edit User Username
+Berikut adalah tampilannya
+
 ![Screenshot 2024-06-28 223022](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/96b192d8-a704-478f-a169-1e697495b65e)
-2. Edit User Password
+
+3. Edit User Password
+Berikut adalah tampilannya
+
 ![Screenshot 2024-06-28 223103](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/16f07842-21e3-4461-a9a4-0a4223df5097)
-3. Banned user
+
+5. Banned user
+Berikut adalah tampilannya
+
 ![Screenshot 2024-06-28 222542](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/2c4b0111-a21a-482d-a556-c181c6b158f6)
-4. Exit
+
+7. Exit
+Berikut adalah tampilannya
+
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/bf775fb8-2d6b-4e66-9918-e2ccf5bc358b)
 
-ISI USERS.LOG
+
+Berikut adalah isi dari USERS.LOG
 ![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/71154e7b-580f-4c42-87cd-5940734fd6de)
+
 
 ### F. Error Handling
 Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan error dan tanpa keluar dari program client.
-Sebagai contoh adalah output `Tidak ada room yang tersedia, buat terlebih dahulu!
-` yang muncul ketika LIST ROOM digunakan namun tidak ada room yang tersedia (bisa dilihat diatas pada bagian CRUD untuk room).
+Sebagai contoh adalah output `Tidak ada room yang tersedia, buat terlebih dahulu!` yang muncul ketika LIST ROOM digunakan namun tidak ada room yang tersedia (bisa dilihat diatas pada bagian CRUD untuk room).
+
 
 ### G. Monitor
 - User dapat menampilkan isi chat secara real-time menggunakan program monitor. Jika ada perubahan pada isi chat, perubahan tersebut akan langsung ditampilkan di terminal.
@@ -258,7 +289,8 @@ Apabila dijalankan dengan command `./monitor LOGIN username -p password` maka ak
 
 ![WhatsApp Image 2024-06-28 at 1 36 36 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/b544dbff-6c04-4b62-ad3f-f77289e6fc20)
 
-Berikut penjelasan untuk code monitor.c yang kami gunakan
+
+Berikut penjelasan untuk code `monitor.c` yang kami gunakan
 
 Struct: Digunakan untuk mengirim argumen ke thread monitor chat, termasuk socket descriptor, username, nama channel, dan nama room.
 ```
@@ -310,7 +342,9 @@ void read_existing_chat(const char *filepath) {
 }
 ```
 
-Berikut adalah penjelasan code yang kami gunakan untuk Discorit.c
+
+
+Berikut adalah penjelasan code yang kami gunakan untuk `Discorit.c`
 
 Main Function: Mengatur proses utama dari aplikasi, termasuk inisialisasi socket, parsing argumen dari command line, koneksi ke server, dan menjalankan fungsi terkait (register atau login).
 ```
