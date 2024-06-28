@@ -48,7 +48,7 @@ Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p 
 - Setelah Masuk Channel user dapat melihat list room dan pengguna dalam channel tersebut
 
 2. Akses Channel dan Room
-   ini fungsi untuk join room
+   ini code yang kami gunakan untuk join room
    ```
    else { // Joining a room
                 printf("Attempting to join room: %s in channel: %s\n", name, current_channel); // Debug info
@@ -60,9 +60,15 @@ Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p 
             }
         }
    ```
-- Akses channel admin dan root
-- Ketika user pertama kali masuk ke channel, mereka memiliki akses terbatas. Jika mereka telah masuk sebelumnya, akses mereka meningkat sesuai dengan admin dan root.
-- User dapat masuk ke room setelah bergabung dengan channel.
+   Apabila berhasil join channel maka akan menampilkan seperti gambar berikut ini
+   
+![Screenshot_2024-06-28_22-11-22](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/58982d0b-7ffb-4f31-803c-aed9e3b74fde)
+
+   Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
+   
+![Screenshot_2024-06-28_22-14-31](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/fe35e7da-fcc3-4dc5-aa97-6f064f4775bc)
+
+   
 
 3. Fitur Chat
    ini adalah fungsi untuk fitur chat
