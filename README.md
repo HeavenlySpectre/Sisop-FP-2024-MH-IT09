@@ -212,7 +212,7 @@ Berikut gambarnya
     snprintf(filepath, sizeof(filepath), "%s/%s/admin/auth.csv", BASE_DIR, channel);
    ```
 Admin dapat melakukan unban pada user yang sudah berperilaku baik. Aktivitas unban tercatat pada users.log. Ketika di unban, role "banned" berubah kembali menjadi "user" dan dapat masuk ke dalam channel.
-
+![Screenshot 2024-06-28 222636](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/71849099-d25b-4b46-84a7-7aaa186cfe2c)
 6. Remove user
    ini fungsi untuk remove user
    ```
@@ -221,17 +221,18 @@ Admin dapat melakukan unban pada user yang sudah berperilaku baik. Aktivitas unb
     sprintf(filename, "/home/azrael/sisop/finalproject/%s/admin/auth.csv", channel);
    ```
 Admin dapat remove user dan tercatat pada users.log.
+![Screenshot 2024-06-28 222719](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f4df98fa-f7da-481f-b700-f49cb974fff9)
 
 
 ### E. User
 User dapat mengubah informasi profil mereka, user yang di ban tidak dapat masuk kedalam channel dan dapat keluar dari room, channel, atau keluar sepenuhnya dari DiscorIT.
 
 1. Edit User Username
-   
+![Screenshot 2024-06-28 223022](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/96b192d8-a704-478f-a169-1e697495b65e)
 2. Edit User Password
-
+![Screenshot 2024-06-28 223103](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/16f07842-21e3-4461-a9a4-0a4223df5097)
 3. Banned user
-
+![Screenshot 2024-06-28 222542](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/2c4b0111-a21a-482d-a556-c181c6b158f6)
 4. Exit
 
 
