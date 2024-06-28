@@ -60,11 +60,11 @@ Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p 
             }
         }
    ```
-   Apabila berhasil join channel maka akan menampilkan seperti gambar berikut ini
+Apabila berhasil join channel maka akan menampilkan seperti gambar berikut ini
    
 ![Screenshot_2024-06-28_22-11-22](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/58982d0b-7ffb-4f31-803c-aed9e3b74fde)
 
-   Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
+Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
    
 ![Screenshot_2024-06-28_22-14-31](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/fe35e7da-fcc3-4dc5-aa97-6f064f4775bc)
 
