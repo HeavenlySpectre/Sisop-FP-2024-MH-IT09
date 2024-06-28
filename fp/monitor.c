@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
     strncpy(args.channel, channel_name, BUF_SIZE);
     strncpy(args.room, room_name, BUF_SIZE);
 
-    printf("[%s] -channel %s -room %s\n", username, channel_name, room_name);
     printf("~isi chat~\n");
 
     // Read existing chat history from chat.csv
