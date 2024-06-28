@@ -222,6 +222,8 @@ Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan e
 - Sebelum dapat menggunakan monitor, pengguna harus login terlebih dahulu dengan cara yang mirip seperti login di DiscorIT.
 - Untuk keluar dari room dan menghentikan program monitor dengan perintah "EXIT".
 - Monitor dapat digunakan untuk menampilkan semua chat pada room, mulai dari chat pertama hingga chat yang akan datang nantinya.
+- 
+![WhatsApp Image 2024-06-28 at 1 36 36 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/b544dbff-6c04-4b62-ad3f-f77289e6fc20)
 
  ini adalah code untuk monitor
   ```
