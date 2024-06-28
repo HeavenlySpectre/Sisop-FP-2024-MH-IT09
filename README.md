@@ -191,6 +191,9 @@ Semua perubahan dan aktivitas user pada room dicatat dalam file users.log.
     snprintf(filepath, sizeof(filepath), "%s/%s/admin/auth.csv", BASE_DIR, channel);
    ```
 Admin dapat melakukan ban pada user yang nakal. Aktivitas ban tercatat pada users.log. Ketika di ban, role "user" berubah menjadi "banned". Data tetap tersimpan dan user tidak dapat masuk ke dalam channel.
+Berikut gambarnya 
+
+![WhatsApp Image 2024-06-28 at 10 24 08 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/d4c3c86e-d043-4070-bc22-cc2330d42e80)
 
 5. Unban
    ini fungsi untuk unban
