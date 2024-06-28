@@ -238,6 +238,8 @@ User dapat mengubah informasi profil mereka, user yang di ban tidak dapat masuk 
 ![Screenshot 2024-06-28 222542](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/2c4b0111-a21a-482d-a556-c181c6b158f6)
 4. Exit
 
+ISI USERS.LOG
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/71154e7b-580f-4c42-87cd-5940734fd6de)
 
 ### F. Error Handling
 Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan error dan tanpa keluar dari program client.
