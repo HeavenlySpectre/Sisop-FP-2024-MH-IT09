@@ -40,6 +40,9 @@ Apabila program dijalankan maka akan menampilkan seperti gambar berikut ini
 Untuk melakukan register, kita bisa menggunakan command `./discorit REGISTER username -p password` kemudian apabila berhasil maka akan menampilkan pesan bahwa akun tersebut telah berhasil di register
 Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p password` kemudian apabila berhasil maka akan menampilkan pesan bahwa akun tersebut telah berhasil login.
 
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/5c33072f-537d-4186-9143-21deb091dd80)
+
+
 ### B. Bagaimana DiscorIT digunakan
 
 1. List Channel dan Room
@@ -117,10 +120,16 @@ Apabila berhasil join room maka akan menampilkan seperti gambar berikut ini
    
 Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan semua pesan disimpan dalam file chat.csv. User dapat melihat pesan-pesan chat yang ada dalam room. Serta user dapat edit dan delete pesan yang sudah dikirim dengan menggunakan ID pesan.
 
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/bd31904d-bccb-4c88-8b48-9f8d49bcaa64)
+
+
 ### C. Root
 - Akun yang pertama kali mendaftar otomatis mendapatkan peran "root".
 - Root dapat masuk ke channel manapun tanpa key dan create, update, dan delete pada channel dan room, mirip dengan admin [D].
 - Root memiliki kemampuan khusus untuk mengelola user, seperti: list, edit, dan Remove.
+
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/69ed1c3d-45c0-4455-a4a5-1019b64eb3d3)
+
 
 ### D. Admin Channel
 - Setiap user yang membuat channel otomatis menjadi admin di channel tersebut. Informasi tentang user disimpan dalam file auth.csv.
