@@ -62,25 +62,9 @@ void delete_chat(int client_sock, const char *channel, const char *room, int cha
 void log_user_activity(const char *format, ...);
 
 void daemonlucknut() {
-    pid_t pid = fork();
+    pid_t pid;
 
-    if (pid < 0) {
-        perror("Fork failed");
-        exit(EXIT_FAILURE);
-    }
-
-    if (pid > 0) {
-        // Exit the parent process
-        exit(EXIT_SUCCESS);
-    }
-
-    // Create a new session
-    if (setsid() < 0) {
-        perror("setsid failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // Fork again to ensure the process cannot acquire a terminal
+    // Fork the parent process
     pid = fork();
 
     if (pid < 0) {
@@ -88,12 +72,34 @@ void daemonlucknut() {
         exit(EXIT_FAILURE);
     }
 
+    // Terminate the parent process
     if (pid > 0) {
-        // Exit the parent process
         exit(EXIT_SUCCESS);
     }
 
-    // Set file permissions
+    // On success: the child process becomes the session leader
+    if (setsid() < 0) {
+        perror("setsid failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Ignore signal sent from child to parent process
+    signal(SIGCHLD, SIG_IGN);
+
+    // Fork off for the second time
+    pid = fork();
+
+    if (pid < 0) {
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Terminate the parent process
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
+
+    // Set new file permissions
     umask(0);
 
     // Change the working directory to the root directory
@@ -102,31 +108,11 @@ void daemonlucknut() {
         exit(EXIT_FAILURE);
     }
 
-    // Close all open file descriptors
-    for (int x = sysconf(_SC_OPEN_MAX); x >= 0; x--) {
-        close(x);
-    }
-
-    // Redirect standard file descriptors to log files
-    int fd0 = open("/dev/null", O_RDONLY);
-    int fd1 = open("/tmp/server_stdout.log", O_WRONLY | O_CREAT | O_TRUNC, 0640);
-    int fd2 = open("/tmp/server_stderr.log", O_WRONLY | O_CREAT | O_TRUNC, 0640);
-
-    if (fd0 != -1) {
-        dup2(fd0, STDIN_FILENO);
-        close(fd0);
-    }
-
-    if (fd1 != -1) {
-        dup2(fd1, STDOUT_FILENO);
-        close(fd1);
-    }
-
-    if (fd2 != -1) {
-        dup2(fd2, STDERR_FILENO);
-        close(fd2);
-    }
+    open("/dev/null", O_RDWR); // stdin
+    dup(0); // stdout
+    dup(0); // stderr
 }
+
 
 int main() {
     daemonlucknut();
