@@ -34,7 +34,7 @@
 
 Apabila program dijalankan maka akan menampilkan seperti gambar berikut ini 
 
-![Screenshot_2024-06-28_21-25-44](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/ae989240-d9fb-4d07-b213-cca2ed6d136f)
+![Screenshot_2024-06-28_21-48-42](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/119129a8-cc5a-4d03-886f-8a3c6afb1149)
 
 
 Untuk melakukan register, kita bisa menggunakan command `./discorit REGISTER username -p password` kemudian apabila berhasil maka akan menampilkan pesan bahwa akun tersebut telah berhasil di register
@@ -222,10 +222,15 @@ Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan e
 - Sebelum dapat menggunakan monitor, pengguna harus login terlebih dahulu dengan cara yang mirip seperti login di DiscorIT.
 - Untuk keluar dari room dan menghentikan program monitor dengan perintah "EXIT".
 - Monitor dapat digunakan untuk menampilkan semua chat pada room, mulai dari chat pertama hingga chat yang akan datang nantinya.
-- 
+
+Apabila dijalankan dengan command `./monitor LOGIN username -p password` maka akan menampilkan seperti gambar dibawah ini 
+
+
 ![WhatsApp Image 2024-06-28 at 1 36 36 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/b544dbff-6c04-4b62-ad3f-f77289e6fc20)
 
-Struktur: Digunakan untuk mengirim argumen ke thread monitor chat, termasuk socket descriptor, username, nama channel, dan nama room.
+Berikut penjelasan untuk code yang kami gunakan
+
+Struct: Digunakan untuk mengirim argumen ke thread monitor chat, termasuk socket descriptor, username, nama channel, dan nama room.
 ```
 typedef struct {
     int sockfd;
@@ -275,7 +280,8 @@ void read_existing_chat(const char *filepath) {
 }
 ```
 
-DiscorIT.
+Berikut adalah penjelasan code yang kami gunakan untuk Discorit.c
+
 Main Function: Mengatur proses utama dari aplikasi, termasuk inisialisasi socket, parsing argumen dari command line, koneksi ke server, dan menjalankan fungsi terkait (register atau login).
 ```
 int main(int argc, char *argv[]) {
