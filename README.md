@@ -166,6 +166,8 @@ Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan se
 
    
 Informasi tentang semua channel disimpan dalam file channel.csv. Semua perubahan dan aktivitas user pada channel dicatat dalam file users.log.
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f1458ca9-6b09-4b31-aa9f-28213648b273)
+
 
 3. Room
    ini adalah fungsi untuk create room
@@ -191,6 +193,7 @@ Informasi tentang semua channel disimpan dalam file channel.csv. Semua perubahan
    ```
    
 Semua perubahan dan aktivitas user pada room dicatat dalam file users.log.
+![image](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/144968322/f0f673c0-fae5-4121-984b-31ddee541918)
 
 4. Ban
    ini adalah fungsi untuk Ban
