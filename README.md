@@ -116,8 +116,10 @@ Setiap user dapat mengirim pesan dalam chat. ID pesan chat dimulai dari 1 dan se
 ### C. Root
 - Akun yang pertama kali mendaftar otomatis mendapatkan peran "root".
   
-![Screenshot_2024-06-28_22-17-10](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/e63e5aca-c7af-4539-bcba-c900443ee754)
 
+![Screenshot 2024-06-28 222216(1)](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/42d2f327-a618-4d6a-a929-ef7c7ddb9ddb)
+
+![Screenshot 2024-06-28 222302](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/9b6c1c3f-4d9b-465a-9a56-f71d0d189abf)
 
 - Root dapat masuk ke channel manapun tanpa key dan create, update, dan delete pada channel dan room, mirip dengan admin [D].
 - Root memiliki kemampuan khusus untuk mengelola user, seperti: list, edit, dan Remove.
