@@ -32,6 +32,13 @@
         return;
    ```
 
+Apabila program dijalankan maka akan menampilkan seperti gambar berikut ini 
+
+![Screenshot_2024-06-28_21-12-20](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/dd0a08f7-faa1-4be6-9303-c8c5176d65a7)
+
+Untuk melakukan register, kita bisa menggunakan command `./discorit REGISTER username -p password` kemudian apabila berhasil maka akan menampilkan pesan bahwa akun tersebut telah berhasil di register
+Untuk melakukan Login, kita bisa menggunakan command `./discorit LOGIN nayya -p password` kemudian apabila berhasil maka akan menampilkan pesan bahwa akun tersebut telah berhasil login.
+
 ### B. Bagaimana DiscorIT digunakan
 
 1. List Channel dan Room
