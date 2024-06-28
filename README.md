@@ -241,7 +241,7 @@ Apabila dijalankan dengan command `./monitor LOGIN username -p password` maka ak
 
 ![WhatsApp Image 2024-06-28 at 1 36 36 PM](https://github.com/HeavenlySpectre/Sisop-FP-2024-MH-IT09/assets/80327619/b544dbff-6c04-4b62-ad3f-f77289e6fc20)
 
-Berikut penjelasan untuk code yang kami gunakan
+Berikut penjelasan untuk code monitor.c yang kami gunakan
 
 Struct: Digunakan untuk mengirim argumen ke thread monitor chat, termasuk socket descriptor, username, nama channel, dan nama room.
 ```
