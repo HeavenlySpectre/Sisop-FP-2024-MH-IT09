@@ -223,6 +223,419 @@ Jika ada command yang tidak sesuai penggunaannya. Maka akan mengeluarkan pesan e
 - Untuk keluar dari room dan menghentikan program monitor dengan perintah "EXIT".
 - Monitor dapat digunakan untuk menampilkan semua chat pada room, mulai dari chat pertama hingga chat yang akan datang nantinya.
 
+ ini adalah code untuk monitor
+  ```
+ #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <pthread.h>
+#include <errno.h>
+#include <stdbool.h>
+#include <fcntl.h>
+#include <time.h>
+#include <sys/inotify.h>
+
+#define PORT 8080
+#define BUF_SIZE 1024
+#define EVENT_SIZE  ( sizeof (struct inotify_event) )
+#define EVENT_BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
+
+typedef struct {
+    int sockfd;
+    char username[BUF_SIZE];
+    char channel[BUF_SIZE];
+    char room[BUF_SIZE];
+} monitor_args_t;
+
+void *monitor_chat(void *args);
+void login_user(int sockfd, char *username, char *password);
+void read_existing_chat(const char *filepath);
+
+int main(int argc, char *argv[]) {
+    if (argc < 4) {
+        printf("Usage: ./monitor LOGIN username -p password\n");
+        exit(EXIT_FAILURE);
+    }
+
+    char *command = argv[1];
+    char *username = argv[2];
+    char *password = argv[4];
+
+    if (strcmp(command, "LOGIN") != 0) {
+        printf("Invalid command. Use LOGIN.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int sockfd;
+    struct sockaddr_in server_addr;
+
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("Socket creation error");
+        exit(EXIT_FAILURE);
+    }
+
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Connection failed");
+        exit(EXIT_FAILURE);
+    }
+
+    login_user(sockfd, username, password);
+
+    char channel_name[BUF_SIZE];
+    char room_name[BUF_SIZE];
+
+    printf("[%s] ", username);
+    scanf(" -channel %s -room %s", channel_name, room_name);
+
+    monitor_args_t args;
+    args.sockfd = sockfd;
+    strncpy(args.username, username, BUF_SIZE);
+    strncpy(args.channel, channel_name, BUF_SIZE);
+    strncpy(args.room, room_name, BUF_SIZE);
+
+    printf("~isi chat~\n");
+
+    // Read existing chat history from chat.csv
+    char chat_filepath[BUF_SIZE];
+    snprintf(chat_filepath, BUF_SIZE, "./%s/%s/chat.csv", channel_name, room_name);
+    read_existing_chat(chat_filepath);
+
+    pthread_t tid;
+    if (pthread_create(&tid, NULL, monitor_chat, (void *)&args) != 0) {
+        perror("Failed to create thread");
+        exit(EXIT_FAILURE);
+    }
+
+    pthread_join(tid, NULL);
+
+    close(sockfd);
+    return 0;
+}
+
+void login_user(int sockfd, char *username, char *password) {
+    char buffer[BUF_SIZE] = {0};
+
+    sprintf(buffer, "LOGIN %s %s", username, password);
+    send(sockfd, buffer, strlen(buffer), 0);
+
+    int bytes_received = read(sockfd, buffer, BUF_SIZE);
+    buffer[bytes_received] = '\0';
+    printf("%s\n", buffer);
+
+    if (!strstr(buffer, "berhasil login")) {
+        printf("Login failed\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void *monitor_chat(void *args) {
+    monitor_args_t *mon_args = (monitor_args_t *)args;
+    int sockfd = mon_args->sockfd;
+    char *username = mon_args->username;
+    char *channel = mon_args->channel;
+    char *room = mon_args->room;
+    char buffer[BUF_SIZE];
+    int inotify_fd, watch_fd;
+    char event_buf[EVENT_BUF_LEN];
+
+    sprintf(buffer, "JOIN %s", channel);
+    send(sockfd, buffer, strlen(buffer), 0);
+
+    int bytes_received = read(sockfd, buffer, BUF_SIZE);
+    buffer[bytes_received] = '\0';
+    if (!strstr(buffer, "JOIN ")) {
+        printf("%s\n", buffer);
+        pthread_exit(NULL);
+    }
+
+    sprintf(buffer, "JOIN %s", room);
+    send(sockfd, buffer, strlen(buffer), 0);
+
+    bytes_received = read(sockfd, buffer, BUF_SIZE);
+    buffer[bytes_received] = '\0';
+    if (!strstr(buffer, "JOIN ")) {
+        printf("%s\n", buffer);
+        pthread_exit(NULL);
+    }
+
+    fcntl(sockfd, F_SETFL, O_NONBLOCK);
+
+    // Set up inotify to monitor changes to chat.csv
+    char chat_filepath[BUF_SIZE];
+    snprintf(chat_filepath, BUF_SIZE, "./%s/%s/chat.csv", channel, room);
+
+    inotify_fd = inotify_init();
+    if (inotify_fd < 0) {
+        perror("inotify_init");
+    }
+
+    watch_fd = inotify_add_watch(inotify_fd, chat_filepath, IN_MODIFY);
+    if (watch_fd < 0) {
+        perror("inotify_add_watch");
+    }
+
+    while (1) {
+        fd_set fds;
+        struct timeval tv;
+        int ret;
+
+        FD_ZERO(&fds);
+        FD_SET(sockfd, &fds);
+        FD_SET(inotify_fd, &fds);
+
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
+        ret = select(sockfd + 1, &fds, NULL, NULL, &tv);
+
+        if (ret > 0) {
+            if (FD_ISSET(sockfd, &fds)) {
+                bytes_received = read(sockfd, buffer, BUF_SIZE);
+                if (bytes_received > 0) {
+                    buffer[bytes_received] = '\0';
+                    printf("%s\n", buffer);
+                }
+            }
+
+            if (FD_ISSET(inotify_fd, &fds)) {
+                int length = read(inotify_fd, event_buf, EVENT_BUF_LEN);
+                if (length < 0) {
+                    perror("read");
+                }
+
+                int i = 0;
+                while (i < length) {
+                    struct inotify_event *event = (struct inotify_event *)&event_buf[i];
+                    if (event->mask & IN_MODIFY) {
+                        read_existing_chat(chat_filepath);
+                    }
+                    i += EVENT_SIZE + event->len;
+                }
+            }
+        }
+
+        char input[BUF_SIZE];
+        if (fgets(input, BUF_SIZE, stdin) != NULL) {
+            input[strcspn(input, "\n")] = 0;
+            if (strcmp(input, "EXIT") == 0) {
+                sprintf(buffer, "[%s/%s/%s] EXIT", username, channel, room);
+                send(sockfd, buffer, strlen(buffer), 0);
+                sprintf(buffer, "[%s] EXIT", username);
+                send(sockfd, buffer, strlen(buffer), 0);
+                break;
+            }
+        }
+        usleep(100000); // Small delay to reduce CPU usage
+    }
+
+    inotify_rm_watch(inotify_fd, watch_fd);
+    close(inotify_fd);
+
+    pthread_exit(NULL);
+}
+
+void read_existing_chat(const char *filepath) {
+    FILE *file = fopen(filepath, "r");
+    if (!file) {
+        perror("fopen");
+        return;
+    }
+
+    char line[BUF_SIZE];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+
+    fclose(file);
+}
+```
+monitor.c berfungsi untuk menenampilkan monitor dari DiscorIT
+
+
+DiscorIT.
+ini adalah code untuk DiscorIT
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <errno.h>
+
+#define PORT 8080
+#define BUF_SIZE 1024
+
+void register_user(int sockfd, char *username, char *password);
+void login_user(int sockfd, char *username, char *password);
+void post_login_interaction(int sockfd, char *username);
+void handle_edit_profile(int sockfd, char *input, char *username, char *current_context);
+
+int main(int argc, char *argv[]) {
+    if (argc < 4) {
+        printf("Usage: ./discorit [REGISTER|LOGIN] username -p password\n");
+        exit(EXIT_FAILURE);
+    }
+
+    char *command = argv[1];
+    char *username = argv[2];
+    char *password = argv[4];
+
+    int sockfd;
+    struct sockaddr_in server_addr;
+
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("Socket creation error");
+        exit(EXIT_FAILURE);
+    }
+
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Connection failed");
+        exit(EXIT_FAILURE);
+    }
+
+    if (strcmp(command, "REGISTER") == 0) {
+        register_user(sockfd, username, password);
+    } else if (strcmp(command, "LOGIN") == 0) {
+        login_user(sockfd, username, password);
+    } else {
+        printf("Invalid command. Use REGISTER or LOGIN.\n");
+    }
+
+    close(sockfd);
+    return 0;
+}
+
+void register_user(int sockfd, char *username, char *password) {
+    char buffer[BUF_SIZE] = {0};
+
+    sprintf(buffer, "REGISTER %s %s", username, password);
+    send(sockfd, buffer, strlen(buffer), 0);
+
+    int bytes_received = read(sockfd, buffer, BUF_SIZE);
+    buffer[bytes_received] = '\0';
+    printf("%s\n", buffer);
+}
+
+void login_user(int sockfd, char *username, char *password) {
+    char buffer[BUF_SIZE] = {0};
+
+    sprintf(buffer, "LOGIN %s %s", username, password);
+    send(sockfd, buffer, strlen(buffer), 0);
+
+    int bytes_received = read(sockfd, buffer, BUF_SIZE);
+    buffer[bytes_received] = '\0';
+    printf("%s\n", buffer);
+
+    if (strstr(buffer, "berhasil login")) {
+        post_login_interaction(sockfd, username);
+    }
+}
+
+void post_login_interaction(int sockfd, char *username) {
+    char buffer[BUF_SIZE] = {0};
+    char input[BUF_SIZE];
+    char current_context[BUF_SIZE] = {0};  // To keep track of the current context (channel or room)
+
+    sprintf(current_context, "[%s] ", username);  // Initial context
+
+    printf("%s", current_context);
+    while (fgets(input, BUF_SIZE, stdin) != NULL) {
+        send(sockfd, input, strlen(input), 0);
+
+        int bytes_received = read(sockfd, buffer, BUF_SIZE);
+        buffer[bytes_received] = '\0';
+
+        if (strncmp(input, "JOIN ", 5) == 0) {
+            if (strstr(buffer, "Key: ") != NULL) {
+                printf("%s ", buffer);
+                fflush(stdout);
+                fgets(input, BUF_SIZE, stdin);
+                input[strcspn(input, "\n")] = 0;
+                send(sockfd, input, strlen(input), 0);
+
+                bytes_received = read(sockfd, buffer, BUF_SIZE);
+                buffer[bytes_received] = '\0';
+                printf("%s\n", buffer);
+            } else {
+                printf("%s\n", buffer);
+            }
+
+            if (strstr(buffer, "anda telah diban") != NULL) {
+                printf("%s\n", buffer);
+                continue;
+            }
+
+            if (strstr(buffer, "JOIN ") != NULL) {
+                char *joined = strtok(buffer + 5, "\n");
+                sprintf(current_context, "[%s/%s] ", username, joined);
+            }
+        } else if (strncmp(input, "EDIT PROFILE SELF -u ", 21) == 0 || strncmp(input, "EDIT PROFILE SELF -p ", 21) == 0) {
+            handle_edit_profile(sockfd, input, username, current_context);
+            continue;
+        } else if (strncmp(input, "EXIT", 4) == 0) {
+            char *last_slash = strrchr(current_context, '/');
+            if (last_slash != NULL) {
+                *last_slash = '\0'; // Remove the last context part
+                char *second_last_slash = strrchr(current_context, '/');
+                if (second_last_slash != NULL) {
+                    sprintf(current_context, "%s] ", current_context);
+                } else {
+                    sprintf(current_context, "[%s] ", current_context + 1); // Restore the root user context
+                }
+            } else {
+                printf("Exiting...\n");
+                break;
+            }
+        } else {
+            printf("%s\n", buffer);
+        }
+
+        printf("%s", current_context);
+    }
+}
+
+void handle_edit_profile(int sockfd, char *input, char *username, char *current_context) {
+    char buffer[BUF_SIZE] = {0};
+
+    if (strncmp(input, "EDIT PROFILE SELF -u ", 21) == 0) {
+        send(sockfd, input, strlen(input), 0);
+        int bytes_received = read(sockfd, buffer, BUF_SIZE);
+        buffer[bytes_received] = '\0';
+        printf("%s\n", buffer);
+
+        if (strstr(buffer, "Profil diupdate") != NULL) {
+            char *new_username_start = strchr(buffer, '[') + 1;
+            char *new_username_end = strchr(new_username_start, ']');
+            *new_username_end = '\0';
+            strcpy(username, new_username_start); // Update the username in the client
+            sprintf(current_context, "[%s] ", new_username_start); // Update the context
+        }
+    } else if (strncmp(input, "EDIT PROFILE SELF -p ", 21) == 0) {
+        send(sockfd, input, strlen(input), 0);
+        int bytes_received = read(sockfd, buffer, BUF_SIZE);
+        buffer[bytes_received] = '\0';
+        printf("%s\n", buffer);
+    }
+
+    printf("%s", current_context);  // Ensure prompt is printed after profile edit
+}
+```
+discorit.c berfungsi untuk menjalankan program dari fungsi-fungsi di server.c
+
+
+
 
 
 
